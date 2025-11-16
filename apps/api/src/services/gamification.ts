@@ -68,7 +68,7 @@ export async function checkAndAwardAchievements(
         break;
 
       case 'challenges_completed':
-        if (user.challengesCompleted >= (criteria.count || 0)) {
+        if ((user.challengesCompleted || 0) >= (criteria.count || 0)) {
           shouldAward = true;
         }
         break;
@@ -148,10 +148,10 @@ export async function updateUserStreak(userId: string) {
 
   if (daysDiff === 0) {
     // Same day transaction, maintain streak
-    newStreak = user.currentStreak;
+    newStreak = user.currentStreak || 0;
   } else if (daysDiff === 1) {
     // Consecutive day, increment streak
-    newStreak = user.currentStreak + 1;
+    newStreak = (user.currentStreak || 0) + 1;
   } else {
     // Streak broken, reset to 1
     newStreak = 1;
@@ -162,7 +162,7 @@ export async function updateUserStreak(userId: string) {
     .update(users)
     .set({
       currentStreak: newStreak,
-      longestStreak: Math.max(newStreak, user.longestStreak),
+      longestStreak: Math.max(newStreak, user.longestStreak || 0),
     })
     .where(eq(users.id, userId));
 }

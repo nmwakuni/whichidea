@@ -1,4 +1,4 @@
-import { sign, verify } from 'jsonwebtoken';
+import { sign, verify, SignOptions } from 'jsonwebtoken';
 import { JWTPayload } from '../middleware/auth';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
@@ -6,11 +6,11 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '30d';
 
 export function generateAccessToken(payload: JWTPayload): string {
-  return sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  return sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN } as SignOptions);
 }
 
 export function generateRefreshToken(payload: JWTPayload): string {
-  return sign(payload, JWT_SECRET, { expiresIn: JWT_REFRESH_EXPIRES_IN });
+  return sign(payload, JWT_SECRET, { expiresIn: JWT_REFRESH_EXPIRES_IN } as SignOptions);
 }
 
 export function verifyToken(token: string): JWTPayload {

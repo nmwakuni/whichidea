@@ -1,5 +1,5 @@
 import { db, otpVerifications } from '@savegame/database';
-import { eq, and, gt } from 'drizzle-orm';
+import { eq, and, gt, lt } from 'drizzle-orm';
 import { generateOTP } from '@savegame/shared';
 
 const OTP_EXPIRES_IN_MINUTES = 10;
@@ -38,7 +38,7 @@ export async function verifyOTP(phoneNumber: string, otpCode: string): Promise<b
   }
 
   // Check max attempts
-  if (otp.attempts >= OTP_MAX_ATTEMPTS) {
+  if ((otp.attempts || 0) >= OTP_MAX_ATTEMPTS) {
     return false;
   }
 
@@ -46,7 +46,7 @@ export async function verifyOTP(phoneNumber: string, otpCode: string): Promise<b
   await db
     .update(otpVerifications)
     .set({
-      attempts: otp.attempts + 1,
+      attempts: (otp.attempts || 0) + 1,
       verified: true,
       verifiedAt: new Date(),
     })
@@ -56,5 +56,5 @@ export async function verifyOTP(phoneNumber: string, otpCode: string): Promise<b
 }
 
 export async function cleanupExpiredOTPs(): Promise<void> {
-  await db.delete(otpVerifications).where(gt(new Date(), otpVerifications.expiresAt));
+  await db.delete(otpVerifications).where(lt(otpVerifications.expiresAt, new Date()));
 }

@@ -19,6 +19,7 @@
     "packages/*"
   ],
   "scripts": {
+    "prepare": "husky install",
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=web",
     "dev:member": "turbo run dev --filter=member",
@@ -33,8 +34,12 @@
     "format": "prettier --write \"**/*.{ts,tsx,md,json,css}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,md,json,css}\"",
     "type-check": "turbo run type-check",
-    "test": "echo \"No tests yet - add tests for production\"",
-    "validate": "pnpm type-check && pnpm lint && pnpm format:check",
+    "test": "turbo run test",
+    "test:unit": "turbo run test:unit",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "validate": "pnpm type-check && pnpm lint && pnpm format:check && pnpm test",
     "validate:fix": "pnpm lint:fix && pnpm format",
     "db:migrate": "cd packages/database && drizzle-kit push:pg",
     "db:studio": "cd packages/database && drizzle-kit studio",
@@ -42,19 +47,24 @@
     "check": "pnpm validate && pnpm build"
   },
   "devDependencies": {
+    "@playwright/test": "^1.41.1",
     "@types/node": "^20.10.6",
     "@typescript-eslint/eslint-plugin": "^6.17.0",
     "@typescript-eslint/parser": "^6.17.0",
+    "@vitest/ui": "^1.1.3",
     "drizzle-kit": "^0.20.9",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.0.4",
     "eslint-config-prettier": "^9.1.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.10",
     "tailwindcss-animate": "^1.0.7",
     "tsx": "^4.7.0",
     "turbo": "^1.11.3",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.3"
   },
   "packageManager": "pnpm@8.14.0",
   "engines": {

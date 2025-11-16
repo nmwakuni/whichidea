@@ -28,7 +28,7 @@ async function getAccessToken(): Promise<string> {
     },
   });
 
-  const data = await response.json();
+  const data = (await response.json()) as any;
 
   if (!data.access_token) {
     throw new Error('Failed to get M-Pesa access token');
@@ -93,7 +93,7 @@ export async function initiateSTKPush(data: {
     body: JSON.stringify(payload),
   });
 
-  const result = await response.json();
+  const result = (await response.json()) as any;
 
   if (result.ResponseCode === '0') {
     return {
@@ -134,7 +134,7 @@ export async function querySTKPushStatus(checkoutRequestId: string) {
     body: JSON.stringify(payload),
   });
 
-  const result = await response.json();
+  const result = (await response.json()) as any;
 
   return {
     resultCode: result.ResultCode,

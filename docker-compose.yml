@@ -1,0 +1,158 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: savegame-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: savegame
+      POSTGRES_PASSWORD: savegame_dev_password
+      POSTGRES_DB: savegame_dev
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./packages/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U savegame']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: savegame-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API Service
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: savegame-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_URL: postgresql://savegame:savegame_dev_password@postgres:5432/savegame_dev
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: dev-jwt-secret-change-in-production
+      JWT_REFRESH_SECRET: dev-refresh-secret-change-in-production
+      MPESA_CONSUMER_KEY: ${MPESA_CONSUMER_KEY}
+      MPESA_CONSUMER_SECRET: ${MPESA_CONSUMER_SECRET}
+      MPESA_PASSKEY: ${MPESA_PASSKEY}
+      MPESA_SHORTCODE: ${MPESA_SHORTCODE}
+      MPESA_ENVIRONMENT: sandbox
+      AFRICASTALKING_API_KEY: ${AFRICASTALKING_API_KEY}
+      AFRICASTALKING_USERNAME: ${AFRICASTALKING_USERNAME}
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./apps/api/src:/app/apps/api/src
+      - ./packages:/app/packages
+    command: pnpm dev:api
+
+  # Admin Dashboard (Web)
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:3001
+    container_name: savegame-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./apps/web/src:/app/apps/web/src
+      - ./packages/shared:/app/packages/shared
+    command: pnpm dev:web
+
+  # Member PWA
+  member:
+    build:
+      context: .
+      dockerfile: apps/member/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:3001
+    container_name: savegame-member
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      NODE_ENV: development
+      PORT: 3002
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+    ports:
+      - '3002:3002'
+    volumes:
+      - ./apps/member/src:/app/apps/member/src
+      - ./packages/shared:/app/packages/shared
+    command: pnpm dev:member
+
+  # pgAdmin (Optional - Database Management UI)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: savegame-pgadmin
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@savegame.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - '5050:80'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    profiles:
+      - tools
+
+  # Redis Commander (Optional - Redis Management UI)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: savegame-redis-commander
+    restart: unless-stopped
+    depends_on:
+      - redis
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    ports:
+      - '8081:8081'
+    profiles:
+      - tools
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  default:
+    name: savegame-network

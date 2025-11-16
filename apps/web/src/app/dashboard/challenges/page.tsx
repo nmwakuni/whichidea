@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import apiClient from '@/lib/api-client';
 import Link from 'next/link';
-import { Plus, Calendar, Users, TrendingUp } from 'lucide-react';
+import { Plus, Calendar, Users, TrendingUp, Target } from 'lucide-react';
 
 export default function ChallengesPage() {
   const { data, isLoading } = useQuery({

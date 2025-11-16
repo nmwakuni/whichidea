@@ -13,7 +13,7 @@ achievementRoutes.use('*', authenticate());
 
 // List achievements
 achievementRoutes.get('/', async (c) => {
-  const organizationId = c.get('organizationId');
+  const organizationId = c.get('organizationId') as string;
 
   // Get both organization-specific and system-wide achievements
   const data = await db
@@ -39,8 +39,8 @@ achievementRoutes.post(
   requireRole('org_admin'),
   validateBody(createAchievementSchema),
   async (c) => {
-    const organizationId = c.get('organizationId');
-    const achievementData = c.get('validatedBody');
+    const organizationId = c.get('organizationId') as string;
+    const achievementData = c.get('validatedBody') as any;
 
     const [newAchievement] = await db
       .insert(achievements)
@@ -83,9 +83,9 @@ achievementRoutes.get('/:id', async (c) => {
 // Get user's achievements
 achievementRoutes.get('/user/:userId', async (c) => {
   const { userId } = c.req.param();
-  const organizationId = c.get('organizationId');
-  const currentUserId = c.get('userId');
-  const userRole = c.get('userRole');
+  const organizationId = c.get('organizationId') as string;
+  const currentUserId = c.get('userId') as string;
+  const userRole = c.get('userRole') as string;
 
   // Members can only view their own achievements
   if (userRole === 'member' && userId !== currentUserId) {

@@ -1,0 +1,6 @@
+{
+  "*.{ts,tsx}": ["eslint --fix", "prettier --write"],
+  "*.{json,md,css}": ["prettier --write"],
+  "apps/api/src/**/*.ts": ["vitest related --run"],
+  "packages/shared/src/**/*.ts": ["vitest related --run"]
+}

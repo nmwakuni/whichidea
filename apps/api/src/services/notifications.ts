@@ -1,4 +1,5 @@
 import { db, notifications } from '@savegame/database';
+import { eq } from 'drizzle-orm';
 
 const AT_API_KEY = process.env.AT_API_KEY;
 const AT_USERNAME = process.env.AT_USERNAME || 'sandbox';
@@ -29,7 +30,7 @@ export async function sendSMS(phoneNumber: string, message: string): Promise<boo
       }),
     });
 
-    const data = await response.json();
+    const data = (await response.json()) as any;
 
     if (data.SMSMessageData?.Recipients?.[0]?.status === 'Success') {
       console.log(`SMS sent to ${phoneNumber}`);
