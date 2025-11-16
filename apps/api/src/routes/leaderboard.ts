@@ -55,10 +55,7 @@ leaderboardRoutes.get('/challenge/:challengeId/me', async (c) => {
     })
     .from(leaderboard)
     .innerJoin(users, eq(leaderboard.userId, users.id))
-    .where(
-      eq(leaderboard.challengeId, challengeId),
-      eq(leaderboard.userId, userId)
-    )
+    .where(eq(leaderboard.challengeId, challengeId), eq(leaderboard.userId, userId))
     .limit(1);
 
   if (!entry) {
@@ -99,9 +96,7 @@ leaderboardRoutes.post('/challenge/:challengeId/recalculate', async (c) => {
     .orderBy(desc(challengeParticipants.totalPoints));
 
   // Delete existing leaderboard entries
-  await db
-    .delete(leaderboard)
-    .where(eq(leaderboard.challengeId, challengeId));
+  await db.delete(leaderboard).where(eq(leaderboard.challengeId, challengeId));
 
   // Create new leaderboard entries
   const leaderboardEntries = participants.map((participant, index) => ({

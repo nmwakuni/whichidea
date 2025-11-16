@@ -4,7 +4,11 @@ import { eq } from 'drizzle-orm';
 import { authenticate, requireRole } from '../middleware/auth';
 import { validateBody } from '../middleware/validate';
 import { AppError } from '../middleware/error-handler';
-import { createOrganizationSchema, updateOrganizationSchema, organizationBrandingSchema } from '@savegame/shared';
+import {
+  createOrganizationSchema,
+  updateOrganizationSchema,
+  organizationBrandingSchema,
+} from '@savegame/shared';
 
 const org = new Hono();
 
@@ -52,24 +56,29 @@ org.patch('/me', requireRole('org_admin'), validateBody(updateOrganizationSchema
 });
 
 // Update branding
-org.patch('/me/branding', requireRole('org_admin'), validateBody(organizationBrandingSchema), async (c) => {
-  const organizationId = c.get('organizationId');
-  const branding = c.get('validatedBody');
+org.patch(
+  '/me/branding',
+  requireRole('org_admin'),
+  validateBody(organizationBrandingSchema),
+  async (c) => {
+    const organizationId = c.get('organizationId');
+    const branding = c.get('validatedBody');
 
-  const [updated] = await db
-    .update(organizations)
-    .set({
-      branding,
-      updatedAt: new Date(),
-    })
-    .where(eq(organizations.id, organizationId))
-    .returning();
+    const [updated] = await db
+      .update(organizations)
+      .set({
+        branding,
+        updatedAt: new Date(),
+      })
+      .where(eq(organizations.id, organizationId))
+      .returning();
 
-  return c.json({
-    success: true,
-    data: updated.branding,
-  });
-});
+    return c.json({
+      success: true,
+      data: updated.branding,
+    });
+  }
+);
 
 // Update settings
 org.patch('/me/settings', requireRole('org_admin'), async (c) => {

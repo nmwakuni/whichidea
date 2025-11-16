@@ -30,10 +30,16 @@ const app = new Hono();
 app.use('*', requestId());
 app.use('*', logger());
 app.use('*', prettyJSON());
-app.use('*', cors({
-  origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000', 'http://localhost:3001'],
-  credentials: true,
-}));
+app.use(
+  '*',
+  cors({
+    origin: process.env.CORS_ORIGIN?.split(',') || [
+      'http://localhost:3000',
+      'http://localhost:3001',
+    ],
+    credentials: true,
+  })
+);
 
 // Health check
 app.get('/health', (c) => {
@@ -57,13 +63,16 @@ app.route('/api/v1/webhooks', webhookRoutes);
 
 // 404 handler
 app.notFound((c) => {
-  return c.json({
-    success: false,
-    error: {
-      code: 'NOT_FOUND',
-      message: 'Route not found',
+  return c.json(
+    {
+      success: false,
+      error: {
+        code: 'NOT_FOUND',
+        message: 'Route not found',
+      },
     },
-  }, 404);
+    404
+  );
 });
 
 // Error handler (must be last)
@@ -74,11 +83,14 @@ const port = Number(process.env.API_PORT) || 3002;
 
 console.log(`🚀 SaveGame API starting on port ${port}...`);
 
-serve({
-  fetch: app.fetch,
-  port,
-}, (info) => {
-  console.log(`✅ Server running at http://localhost:${info.port}`);
-});
+serve(
+  {
+    fetch: app.fetch,
+    port,
+  },
+  (info) => {
+    console.log(`✅ Server running at http://localhost:${info.port}`);
+  }
+);
 
 export default app;

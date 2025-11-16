@@ -1,19 +1,24 @@
-import { db, users, achievements, userAchievements, challengeParticipants } from '@savegame/database';
+import {
+  db,
+  users,
+  achievements,
+  userAchievements,
+  challengeParticipants,
+} from '@savegame/database';
 import { eq, and, sql } from 'drizzle-orm';
 
 /**
  * Check and award achievements for a user
  */
-export async function checkAndAwardAchievements(userId: string, context?: {
-  challengeId?: string;
-  transactionAmount?: number;
-}) {
+export async function checkAndAwardAchievements(
+  userId: string,
+  context?: {
+    challengeId?: string;
+    transactionAmount?: number;
+  }
+) {
   // Get user data
-  const [user] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, userId))
-    .limit(1);
+  const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
 
   if (!user) return;
 
@@ -22,10 +27,7 @@ export async function checkAndAwardAchievements(userId: string, context?: {
     .select()
     .from(achievements)
     .where(
-      and(
-        eq(achievements.organizationId, user.organizationId),
-        eq(achievements.deletedAt, null)
-      )
+      and(eq(achievements.organizationId, user.organizationId), eq(achievements.deletedAt, null))
     );
 
   // Check each achievement
@@ -37,10 +39,7 @@ export async function checkAndAwardAchievements(userId: string, context?: {
       .select()
       .from(userAchievements)
       .where(
-        and(
-          eq(userAchievements.userId, userId),
-          eq(userAchievements.achievementId, achievement.id)
-        )
+        and(eq(userAchievements.userId, userId), eq(userAchievements.achievementId, achievement.id))
       )
       .limit(1);
 
@@ -96,13 +95,11 @@ export async function checkAndAwardAchievements(userId: string, context?: {
 
     // Award achievement
     if (shouldAward) {
-      await db
-        .insert(userAchievements)
-        .values({
-          userId,
-          achievementId: achievement.id,
-          challengeId: context?.challengeId || null,
-        });
+      await db.insert(userAchievements).values({
+        userId,
+        achievementId: achievement.id,
+        challengeId: context?.challengeId || null,
+      });
 
       // Update achievement count
       await db
@@ -130,29 +127,22 @@ export async function updateUserStreak(userId: string) {
       date: sql`DATE(${transactions.transactionDate})`,
     })
     .from(transactions)
-    .where(
-      and(
-        eq(transactions.userId, userId),
-        eq(transactions.status, 'verified')
-      )
-    )
+    .where(and(eq(transactions.userId, userId), eq(transactions.status, 'verified')))
     .orderBy(sql`${transactions.transactionDate} DESC`)
     .limit(2);
 
   if (recentTransactions.length === 0) return;
 
-  const [user] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, userId))
-    .limit(1);
+  const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
 
   if (!user) return;
 
   // Calculate streak
   const today = new Date();
   const lastTransactionDate = new Date(recentTransactions[0].date as string);
-  const daysDiff = Math.floor((today.getTime() - lastTransactionDate.getTime()) / (1000 * 60 * 60 * 24));
+  const daysDiff = Math.floor(
+    (today.getTime() - lastTransactionDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
 
   let newStreak = user.currentStreak;
 
@@ -188,12 +178,12 @@ export async function recalculateLeaderboard(challengeId: string) {
     .select()
     .from(challengeParticipants)
     .where(eq(challengeParticipants.challengeId, challengeId))
-    .orderBy(sql`${challengeParticipants.totalPoints} DESC, ${challengeParticipants.totalContributed} DESC`);
+    .orderBy(
+      sql`${challengeParticipants.totalPoints} DESC, ${challengeParticipants.totalContributed} DESC`
+    );
 
   // Delete existing leaderboard entries
-  await db
-    .delete(leaderboard)
-    .where(eq(leaderboard.challengeId, challengeId));
+  await db.delete(leaderboard).where(eq(leaderboard.challengeId, challengeId));
 
   // Create new leaderboard entries
   if (participants.length > 0) {

@@ -1,13 +1,29 @@
-import { pgTable, uuid, varchar, text, jsonb, timestamp, integer, pgEnum } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  uuid,
+  varchar,
+  text,
+  jsonb,
+  timestamp,
+  integer,
+  pgEnum,
+} from 'drizzle-orm/pg-core';
 import { organizations } from './organizations';
 import { users } from './users';
 import { challenges } from './challenges';
 
-export const achievementRarity = pgEnum('achievement_rarity', ['common', 'rare', 'epic', 'legendary']);
+export const achievementRarity = pgEnum('achievement_rarity', [
+  'common',
+  'rare',
+  'epic',
+  'legendary',
+]);
 
 export const achievements = pgTable('achievements', {
   id: uuid('id').primaryKey().defaultRandom(),
-  organizationId: uuid('organization_id').references(() => organizations.id, { onDelete: 'cascade' }),
+  organizationId: uuid('organization_id').references(() => organizations.id, {
+    onDelete: 'cascade',
+  }),
 
   // Info
   name: varchar('name', { length: 100 }).notNull(),
@@ -16,15 +32,17 @@ export const achievements = pgTable('achievements', {
   rarity: achievementRarity('rarity').notNull().default('common'),
 
   // Criteria
-  criteria: jsonb('criteria').$type<{
-    type: 'first_save' | 'streak' | 'total_saved' | 'challenges_completed' | 'rank';
-    minAmount?: number;
-    days?: number;
-    amount?: number;
-    count?: number;
-    position?: number;
-    challengeId?: string;
-  }>().notNull(),
+  criteria: jsonb('criteria')
+    .$type<{
+      type: 'first_save' | 'streak' | 'total_saved' | 'challenges_completed' | 'rank';
+      minAmount?: number;
+      days?: number;
+      amount?: number;
+      count?: number;
+      position?: number;
+      challengeId?: string;
+    }>()
+    .notNull(),
 
   // Display
   sortOrder: integer('sort_order').default(0),
@@ -40,8 +58,12 @@ export const achievements = pgTable('achievements', {
 
 export const userAchievements = pgTable('user_achievements', {
   id: uuid('id').primaryKey().defaultRandom(),
-  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  achievementId: uuid('achievement_id').notNull().references(() => achievements.id, { onDelete: 'cascade' }),
+  userId: uuid('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  achievementId: uuid('achievement_id')
+    .notNull()
+    .references(() => achievements.id, { onDelete: 'cascade' }),
   challengeId: uuid('challenge_id').references(() => challenges.id, { onDelete: 'set null' }),
 
   // Progress

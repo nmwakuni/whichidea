@@ -4,7 +4,9 @@ import { users } from './users';
 
 export const auditLogs = pgTable('audit_logs', {
   id: uuid('id').primaryKey().defaultRandom(),
-  organizationId: uuid('organization_id').references(() => organizations.id, { onDelete: 'cascade' }),
+  organizationId: uuid('organization_id').references(() => organizations.id, {
+    onDelete: 'cascade',
+  }),
   userId: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
 
   // Action

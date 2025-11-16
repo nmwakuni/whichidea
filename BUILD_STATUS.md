@@ -5,6 +5,7 @@
 ## ✅ Completed (Phase 1: Foundation & API Core)
 
 ### Planning & Documentation
+
 - ✅ Product Requirements Document (PRD)
 - ✅ Technical Architecture
 - ✅ MVP Implementation Plan (8-week roadmap)
@@ -12,12 +13,14 @@
 - ✅ Project README
 
 ### Monorepo Setup
+
 - ✅ Turborepo configuration
 - ✅ pnpm workspace setup
 - ✅ TypeScript configurations for all apps
 - ✅ Apps scaffolded (web, member, api)
 
 ### Database Package (`packages/database`)
+
 - ✅ Complete Drizzle ORM schema (12+ tables)
   - Organizations, Users, Challenges, Teams
   - Challenge Participants
@@ -31,6 +34,7 @@
 - ✅ Database connection configuration
 
 ### Shared Package (`packages/shared`)
+
 - ✅ Constants & configuration
 - ✅ Zod validators for all entities
 - ✅ 30+ utility functions
@@ -44,6 +48,7 @@
 ### API Server (`apps/api`) - **IN PROGRESS**
 
 **Core Setup:**
+
 - ✅ Hono app configuration
 - ✅ Environment variable loading
 - ✅ Health check endpoint
@@ -51,6 +56,7 @@
 - ✅ Global error handler
 
 **Middleware:**
+
 - ✅ Error handling (AppError class, ZodError handling)
 - ✅ Request ID tracking
 - ✅ JWT authentication
@@ -62,11 +68,13 @@
 - ✅ Pretty JSON
 
 **Utilities:**
+
 - ✅ JWT token generation & verification
 - ✅ OTP creation & verification
 - ✅ Password hashing & comparison
 
 **API Routes:**
+
 - ✅ **Auth Routes** (`/api/v1/auth`)
   - POST /send-otp - Send OTP to phone
   - POST /verify-otp - Verify OTP and login
@@ -101,6 +109,7 @@
 ## 🚧 In Progress
 
 ### API Server (Remaining)
+
 - 🔄 Transaction routes
 - 🔄 Leaderboard routes
 - 🔄 Achievement routes
@@ -108,6 +117,7 @@
 - 🔄 Webhook routes (M-Pesa callbacks)
 
 ### Services
+
 - ⏳ Gamification engine
 - ⏳ Notification service (SMS)
 - ⏳ M-Pesa integration service
@@ -117,6 +127,7 @@
 ## 📋 TODO (Phase 2: Frontend Apps)
 
 ### Admin Dashboard (`apps/web`)
+
 - ⏳ Next.js 14 setup with App Router
 - ⏳ TailwindCSS + shadcn/ui
 - ⏳ Auth pages (login, OTP verification)
@@ -128,6 +139,7 @@
 - ⏳ API client setup
 
 ### Member PWA (`apps/member`)
+
 - ⏳ Next.js 14 setup with App Router
 - ⏳ PWA configuration
 - ⏳ Mobile-first design
@@ -140,6 +152,7 @@
 - ⏳ Offline support
 
 ### UI Components (`packages/ui`)
+
 - ⏳ Button, Input, Select components
 - ⏳ Card, Badge, Avatar components
 - ⏳ Modal, Dialog components
@@ -152,11 +165,13 @@
 ## 📋 TODO (Phase 3: Polish & Deploy)
 
 ### Testing
+
 - ⏳ Unit tests for utilities
 - ⏳ Integration tests for API
 - ⏳ E2E tests for critical flows
 
 ### Deployment
+
 - ⏳ Vercel configuration (frontends)
 - ⏳ Railway configuration (API + DB)
 - ⏳ Environment variable setup
@@ -164,6 +179,7 @@
 - ⏳ Production database migration
 
 ### Documentation
+
 - ⏳ API documentation (Swagger/OpenAPI)
 - ⏳ Setup instructions
 - ⏳ Deployment guide
@@ -174,6 +190,7 @@
 **Overall Progress:** ~40% Complete
 
 **Breakdown:**
+
 - ✅ Planning & Design: 100%
 - ✅ Database Schema: 100%
 - ✅ Shared Utilities: 100%

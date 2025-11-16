@@ -5,11 +5,18 @@ import { challenges } from './challenges';
 import { transactions } from './transactions';
 
 export const notificationType = pgEnum('notification_type', ['sms', 'whatsapp', 'push', 'email']);
-export const notificationStatus = pgEnum('notification_status', ['pending', 'sent', 'failed', 'delivered']);
+export const notificationStatus = pgEnum('notification_status', [
+  'pending',
+  'sent',
+  'failed',
+  'delivered',
+]);
 
 export const notifications = pgTable('notifications', {
   id: uuid('id').primaryKey().defaultRandom(),
-  organizationId: uuid('organization_id').notNull().references(() => organizations.id, { onDelete: 'cascade' }),
+  organizationId: uuid('organization_id')
+    .notNull()
+    .references(() => organizations.id, { onDelete: 'cascade' }),
   userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }),
 
   // Content

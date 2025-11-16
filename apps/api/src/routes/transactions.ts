@@ -21,9 +21,7 @@ transactionRoutes.get('/', validateQuery(transactionFilterSchema), async (c) => 
 
   const offset = (page - 1) * pageSize;
 
-  let conditions = [
-    eq(transactions.organizationId, organizationId),
-  ];
+  let conditions = [eq(transactions.organizationId, organizationId)];
 
   // Members can only see their own transactions
   if (userRole === 'member') {
@@ -80,31 +78,39 @@ transactionRoutes.get('/', validateQuery(transactionFilterSchema), async (c) => 
 });
 
 // Create transaction (manual entry - admin only)
-transactionRoutes.post('/', requireRole('org_admin'), validateBody(createTransactionSchema), async (c) => {
-  const organizationId = c.get('organizationId');
-  const verifiedBy = c.get('userId');
-  const transactionData = c.get('validatedBody');
+transactionRoutes.post(
+  '/',
+  requireRole('org_admin'),
+  validateBody(createTransactionSchema),
+  async (c) => {
+    const organizationId = c.get('organizationId');
+    const verifiedBy = c.get('userId');
+    const transactionData = c.get('validatedBody');
 
-  const [newTransaction] = await db
-    .insert(transactions)
-    .values({
-      ...transactionData,
-      organizationId,
-      status: 'verified',
-      verifiedBy,
-      verifiedAt: new Date(),
-      source: 'manual',
-    })
-    .returning();
+    const [newTransaction] = await db
+      .insert(transactions)
+      .values({
+        ...transactionData,
+        organizationId,
+        status: 'verified',
+        verifiedBy,
+        verifiedAt: new Date(),
+        source: 'manual',
+      })
+      .returning();
 
-  // Process transaction (update stats, calculate points)
-  await processTransaction(newTransaction.id);
+    // Process transaction (update stats, calculate points)
+    await processTransaction(newTransaction.id);
 
-  return c.json({
-    success: true,
-    data: newTransaction,
-  }, 201);
-});
+    return c.json(
+      {
+        success: true,
+        data: newTransaction,
+      },
+      201
+    );
+  }
+);
 
 // Get transaction by ID
 transactionRoutes.get('/:id', async (c) => {
@@ -116,12 +122,7 @@ transactionRoutes.get('/:id', async (c) => {
   const [transaction] = await db
     .select()
     .from(transactions)
-    .where(
-      and(
-        eq(transactions.id, id),
-        eq(transactions.organizationId, organizationId)
-      )
-    )
+    .where(and(eq(transactions.id, id), eq(transactions.organizationId, organizationId)))
     .limit(1);
 
   if (!transaction) {

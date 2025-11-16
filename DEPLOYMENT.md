@@ -117,6 +117,7 @@ vercel --prod
 ```
 
 Or connect GitHub repo in Vercel dashboard:
+
 1. New Project → Import from GitHub
 2. Select root directory: `apps/web`
 3. Framework: Next.js
@@ -149,6 +150,7 @@ vercel --prod
 ```
 
 Or via Vercel dashboard:
+
 - Root directory: `apps/member`
 - Build command: `cd ../.. && pnpm install && pnpm build --filter=member`
 

@@ -4,7 +4,10 @@ import { CURRENCY_SYMBOL, DEFAULT_CURRENCY } from './constants';
 /**
  * Format currency amount
  */
-export function formatCurrency(amount: number | string, currency: string = DEFAULT_CURRENCY): string {
+export function formatCurrency(
+  amount: number | string,
+  currency: string = DEFAULT_CURRENCY
+): string {
   const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
   const symbol = CURRENCY_SYMBOL[currency] || currency;
   return `${symbol} ${numAmount.toLocaleString('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -128,8 +131,16 @@ export function getInitials(firstName?: string, lastName?: string): string {
  */
 export function generateColor(): string {
   const colors = [
-    '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
-    '#EC4899', '#14B8A6', '#F97316', '#06B6D4', '#84CC16',
+    '#3B82F6',
+    '#10B981',
+    '#F59E0B',
+    '#EF4444',
+    '#8B5CF6',
+    '#EC4899',
+    '#14B8A6',
+    '#F97316',
+    '#06B6D4',
+    '#84CC16',
   ];
   return colors[Math.floor(Math.random() * colors.length)];
 }
@@ -146,7 +157,7 @@ export function isValidKenyanPhone(phone: string): boolean {
  * Sleep utility for async operations
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -188,14 +199,17 @@ export function chunk<T>(array: T[], size: number): T[][] {
  * Group array by key
  */
 export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
-  return array.reduce((groups, item) => {
-    const groupKey = String(item[key]);
-    if (!groups[groupKey]) {
-      groups[groupKey] = [];
-    }
-    groups[groupKey].push(item);
-    return groups;
-  }, {} as Record<string, T[]>);
+  return array.reduce(
+    (groups, item) => {
+      const groupKey = String(item[key]);
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
+      }
+      groups[groupKey].push(item);
+      return groups;
+    },
+    {} as Record<string, T[]>
+  );
 }
 
 /**
@@ -206,7 +220,7 @@ export function omit<T extends Record<string, any>, K extends keyof T>(
   keys: K[]
 ): Omit<T, K> {
   const result = { ...obj };
-  keys.forEach(key => delete result[key]);
+  keys.forEach((key) => delete result[key]);
   return result;
 }
 
@@ -218,7 +232,7 @@ export function pick<T extends Record<string, any>, K extends keyof T>(
   keys: K[]
 ): Pick<T, K> {
   const result = {} as Pick<T, K>;
-  keys.forEach(key => {
+  keys.forEach((key) => {
     if (key in obj) {
       result[key] = obj[key];
     }

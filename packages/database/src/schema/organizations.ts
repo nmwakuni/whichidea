@@ -1,8 +1,35 @@
-import { pgTable, uuid, varchar, text, jsonb, timestamp, integer, decimal, pgEnum } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  uuid,
+  varchar,
+  text,
+  jsonb,
+  timestamp,
+  integer,
+  decimal,
+  pgEnum,
+} from 'drizzle-orm/pg-core';
 
-export const organizationType = pgEnum('organization_type', ['chama', 'sacco', 'mfi', 'bank', 'ngo']);
-export const subscriptionTier = pgEnum('subscription_tier', ['starter', 'growth', 'enterprise', 'custom']);
-export const subscriptionStatus = pgEnum('subscription_status', ['trial', 'active', 'past_due', 'canceled', 'paused']);
+export const organizationType = pgEnum('organization_type', [
+  'chama',
+  'sacco',
+  'mfi',
+  'bank',
+  'ngo',
+]);
+export const subscriptionTier = pgEnum('subscription_tier', [
+  'starter',
+  'growth',
+  'enterprise',
+  'custom',
+]);
+export const subscriptionStatus = pgEnum('subscription_status', [
+  'trial',
+  'active',
+  'past_due',
+  'canceled',
+  'paused',
+]);
 
 export const organizations = pgTable('organizations', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -18,16 +45,18 @@ export const organizations = pgTable('organizations', {
   email: varchar('email', { length: 255 }),
 
   // Branding
-  branding: jsonb('branding').$type<{
-    logoUrl?: string;
-    primaryColor: string;
-    secondaryColor: string;
-    accentColor: string;
-  }>().default({
-    primaryColor: '#3B82F6',
-    secondaryColor: '#10B981',
-    accentColor: '#F59E0B'
-  }),
+  branding: jsonb('branding')
+    .$type<{
+      logoUrl?: string;
+      primaryColor: string;
+      secondaryColor: string;
+      accentColor: string;
+    }>()
+    .default({
+      primaryColor: '#3B82F6',
+      secondaryColor: '#10B981',
+      accentColor: '#F59E0B',
+    }),
 
   // Subscription
   subscriptionTier: subscriptionTier('subscription_tier').notNull().default('starter'),
@@ -44,17 +73,19 @@ export const organizations = pgTable('organizations', {
   }>(),
 
   // Settings
-  settings: jsonb('settings').$type<{
-    allowManualTransactions: boolean;
-    requireTransactionApproval: boolean;
-    notificationsEnabled: boolean;
-    currency: string;
-  }>().default({
-    allowManualTransactions: true,
-    requireTransactionApproval: false,
-    notificationsEnabled: true,
-    currency: 'KES'
-  }),
+  settings: jsonb('settings')
+    .$type<{
+      allowManualTransactions: boolean;
+      requireTransactionApproval: boolean;
+      notificationsEnabled: boolean;
+      currency: string;
+    }>()
+    .default({
+      allowManualTransactions: true,
+      requireTransactionApproval: false,
+      notificationsEnabled: true,
+      currency: 'KES',
+    }),
 
   // Stats
   totalMembers: integer('total_members').default(0),

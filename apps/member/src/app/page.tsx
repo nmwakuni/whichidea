@@ -55,9 +55,7 @@ export default function HomePage() {
             </div>
             <div>
               <p className="text-sm text-gray-600">Points</p>
-              <p className="text-xl font-bold text-primary">
-                {user.stats?.totalPoints || 0}
-              </p>
+              <p className="text-xl font-bold text-primary">{user.stats?.totalPoints || 0}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Current Streak</p>

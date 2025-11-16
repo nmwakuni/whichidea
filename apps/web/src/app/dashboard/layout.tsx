@@ -4,20 +4,9 @@ import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
-import {
-  LayoutDashboard,
-  Target,
-  Users,
-  BarChart3,
-  Settings,
-  LogOut,
-} from 'lucide-react';
+import { LayoutDashboard, Target, Users, BarChart3, Settings, LogOut } from 'lucide-react';
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, isLoading, logout } = useAuth();
   const router = useRouter();
 
@@ -76,7 +65,8 @@ export default function DashboardLayout({
           <div className="p-4 border-t border-gray-200">
             <div className="flex items-center mb-4">
               <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">
-                {user.firstName?.[0]}{user.lastName?.[0]}
+                {user.firstName?.[0]}
+                {user.lastName?.[0]}
               </div>
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-900">
@@ -98,9 +88,7 @@ export default function DashboardLayout({
 
       {/* Main content */}
       <main className="pl-64">
-        <div className="px-8 py-6">
-          {children}
-        </div>
+        <div className="px-8 py-6">{children}</div>
       </main>
     </div>
   );

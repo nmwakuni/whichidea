@@ -1,14 +1,33 @@
-import { pgTable, uuid, varchar, decimal, timestamp, integer, text, jsonb, pgEnum } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  uuid,
+  varchar,
+  decimal,
+  timestamp,
+  integer,
+  text,
+  jsonb,
+  pgEnum,
+} from 'drizzle-orm/pg-core';
 import { organizations } from './organizations';
 import { users } from './users';
 import { challenges } from './challenges';
 
-export const transactionStatus = pgEnum('transaction_status', ['pending', 'verified', 'failed', 'refunded']);
+export const transactionStatus = pgEnum('transaction_status', [
+  'pending',
+  'verified',
+  'failed',
+  'refunded',
+]);
 
 export const transactions = pgTable('transactions', {
   id: uuid('id').primaryKey().defaultRandom(),
-  organizationId: uuid('organization_id').notNull().references(() => organizations.id),
-  userId: uuid('user_id').notNull().references(() => users.id),
+  organizationId: uuid('organization_id')
+    .notNull()
+    .references(() => organizations.id),
+  userId: uuid('user_id')
+    .notNull()
+    .references(() => users.id),
   challengeId: uuid('challenge_id').references(() => challenges.id, { onDelete: 'set null' }),
 
   // Transaction details

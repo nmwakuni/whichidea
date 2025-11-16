@@ -56,7 +56,5 @@ export async function verifyOTP(phoneNumber: string, otpCode: string): Promise<b
 }
 
 export async function cleanupExpiredOTPs(): Promise<void> {
-  await db
-    .delete(otpVerifications)
-    .where(gt(new Date(), otpVerifications.expiresAt));
+  await db.delete(otpVerifications).where(gt(new Date(), otpVerifications.expiresAt));
 }

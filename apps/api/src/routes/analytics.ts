@@ -39,41 +39,57 @@ analyticsRoutes.get('/overview', requireRole('org_admin'), async (c) => {
     savingsThisMonth,
     savingsLastMonth,
   ] = await Promise.all([
-    db.select({ count: sql`count(*)` }).from(users)
+    db
+      .select({ count: sql`count(*)` })
+      .from(users)
       .where(and(eq(users.organizationId, organizationId), eq(users.deletedAt, null))),
-    db.select({ count: sql`count(distinct ${users.id})` }).from(users)
+    db
+      .select({ count: sql`count(distinct ${users.id})` })
+      .from(users)
       .innerJoin(transactions, eq(users.id, transactions.userId))
-      .where(and(
-        eq(users.organizationId, organizationId),
-        gte(transactions.transactionDate, thisMonthStart)
-      )),
-    db.select({ count: sql`count(*)` }).from(challenges)
+      .where(
+        and(
+          eq(users.organizationId, organizationId),
+          gte(transactions.transactionDate, thisMonthStart)
+        )
+      ),
+    db
+      .select({ count: sql`count(*)` })
+      .from(challenges)
       .where(and(eq(challenges.organizationId, organizationId), eq(challenges.deletedAt, null))),
-    db.select({ count: sql`count(*)` }).from(challenges)
-      .where(and(
-        eq(challenges.organizationId, organizationId),
-        eq(challenges.status, 'active')
-      )),
-    db.select({ total: sql`COALESCE(sum(${transactions.amount}), 0)` }).from(transactions)
-      .where(and(
-        eq(transactions.organizationId, organizationId),
-        eq(transactions.status, 'verified'),
-        gte(transactions.transactionDate, thisMonthStart)
-      )),
-    db.select({ total: sql`COALESCE(sum(${transactions.amount}), 0)` }).from(transactions)
-      .where(and(
-        eq(transactions.organizationId, organizationId),
-        eq(transactions.status, 'verified'),
-        gte(transactions.transactionDate, lastMonthStart),
-        lte(transactions.transactionDate, lastMonthEnd)
-      )),
+    db
+      .select({ count: sql`count(*)` })
+      .from(challenges)
+      .where(and(eq(challenges.organizationId, organizationId), eq(challenges.status, 'active'))),
+    db
+      .select({ total: sql`COALESCE(sum(${transactions.amount}), 0)` })
+      .from(transactions)
+      .where(
+        and(
+          eq(transactions.organizationId, organizationId),
+          eq(transactions.status, 'verified'),
+          gte(transactions.transactionDate, thisMonthStart)
+        )
+      ),
+    db
+      .select({ total: sql`COALESCE(sum(${transactions.amount}), 0)` })
+      .from(transactions)
+      .where(
+        and(
+          eq(transactions.organizationId, organizationId),
+          eq(transactions.status, 'verified'),
+          gte(transactions.transactionDate, lastMonthStart),
+          lte(transactions.transactionDate, lastMonthEnd)
+        )
+      ),
   ]);
 
   const savingsThisMonthValue = Number(savingsThisMonth[0]?.total || 0);
   const savingsLastMonthValue = Number(savingsLastMonth[0]?.total || 0);
-  const growthRate = savingsLastMonthValue > 0
-    ? ((savingsThisMonthValue - savingsLastMonthValue) / savingsLastMonthValue) * 100
-    : 0;
+  const growthRate =
+    savingsLastMonthValue > 0
+      ? ((savingsThisMonthValue - savingsLastMonthValue) / savingsLastMonthValue) * 100
+      : 0;
 
   return c.json({
     success: true,
@@ -120,11 +136,13 @@ analyticsRoutes.get('/savings-trends', requireRole('org_admin'), async (c) => {
       count: sql`count(*)`,
     })
     .from(transactions)
-    .where(and(
-      eq(transactions.organizationId, organizationId),
-      eq(transactions.status, 'verified'),
-      gte(transactions.transactionDate, startDate)
-    ))
+    .where(
+      and(
+        eq(transactions.organizationId, organizationId),
+        eq(transactions.status, 'verified'),
+        gte(transactions.transactionDate, startDate)
+      )
+    )
     .groupBy(dateFormat)
     .orderBy(dateFormat);
 
@@ -138,22 +156,23 @@ analyticsRoutes.get('/savings-trends', requireRole('org_admin'), async (c) => {
 analyticsRoutes.get('/engagement', requireRole('org_admin'), async (c) => {
   const organizationId = c.get('organizationId');
 
-  const [
-    totalUsers,
-    usersWithTransactions,
-    usersInChallenges,
-  ] = await Promise.all([
-    db.select({ count: sql`count(*)` }).from(users)
+  const [totalUsers, usersWithTransactions, usersInChallenges] = await Promise.all([
+    db
+      .select({ count: sql`count(*)` })
+      .from(users)
       .where(and(eq(users.organizationId, organizationId), eq(users.deletedAt, null))),
-    db.select({ count: sql`count(distinct ${users.id})` }).from(users)
+    db
+      .select({ count: sql`count(distinct ${users.id})` })
+      .from(users)
       .innerJoin(transactions, eq(users.id, transactions.userId))
       .where(eq(users.organizationId, organizationId)),
-    db.select({ count: sql`count(distinct ${users.id})` }).from(users)
+    db
+      .select({ count: sql`count(distinct ${users.id})` })
+      .from(users)
       .innerJoin(challengeParticipants, eq(users.id, challengeParticipants.userId))
-      .where(and(
-        eq(users.organizationId, organizationId),
-        eq(challengeParticipants.status, 'active')
-      )),
+      .where(
+        and(eq(users.organizationId, organizationId), eq(challengeParticipants.status, 'active'))
+      ),
   ]);
 
   const total = Number(totalUsers[0]?.count || 1);
@@ -185,10 +204,7 @@ analyticsRoutes.get('/challenge-performance', requireRole('org_admin'), async (c
     })
     .from(challenges)
     .leftJoin(challengeParticipants, eq(challenges.id, challengeParticipants.challengeId))
-    .where(and(
-      eq(challenges.organizationId, organizationId),
-      eq(challenges.deletedAt, null)
-    ))
+    .where(and(eq(challenges.organizationId, organizationId), eq(challenges.deletedAt, null)))
     .groupBy(challenges.id)
     .orderBy(desc(sql`COALESCE(sum(${challengeParticipants.totalContributed}), 0)`));
 
@@ -211,10 +227,7 @@ analyticsRoutes.get('/top-savers', requireRole('org_admin'), async (c) => {
       challengesCompleted: users.challengesCompleted,
     })
     .from(users)
-    .where(and(
-      eq(users.organizationId, organizationId),
-      eq(users.deletedAt, null)
-    ))
+    .where(and(eq(users.organizationId, organizationId), eq(users.deletedAt, null)))
     .orderBy(desc(users.totalSaved))
     .limit(limit);
 

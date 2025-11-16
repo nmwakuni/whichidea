@@ -40,6 +40,7 @@ pnpm dev
 ```
 
 This will start:
+
 - Admin dashboard: http://localhost:3000
 - Member PWA: http://localhost:3001
 - API server: http://localhost:3002
@@ -67,6 +68,7 @@ whichidea/
 ## 🛠️ Tech Stack
 
 **Frontend:**
+
 - Next.js 14 (App Router)
 - React 18
 - TailwindCSS
@@ -74,17 +76,20 @@ whichidea/
 - Zustand (state management)
 
 **Backend:**
+
 - Hono.js
 - PostgreSQL (Supabase/Railway)
 - Redis (Upstash)
 - Drizzle ORM
 
 **Integrations:**
+
 - M-Pesa Daraja API
 - AfricasTalking (SMS/WhatsApp)
 - Resend (Email)
 
 **Hosting:**
+
 - Vercel (Frontends)
 - Railway (Backend + DB)
 - Upstash (Redis)
@@ -99,6 +104,7 @@ whichidea/
 ## 🎮 Core Features
 
 ### For Organizations (Admin Dashboard)
+
 - ✅ Multi-tenant organization management
 - ✅ Custom branding (logo, colors)
 - ✅ Member management
@@ -108,6 +114,7 @@ whichidea/
 - ✅ SMS/WhatsApp notifications
 
 ### For Members (PWA)
+
 - ✅ Phone-based authentication
 - ✅ Challenge participation
 - ✅ Real-time leaderboards
@@ -117,6 +124,7 @@ whichidea/
 - ✅ Team competitions
 
 ### Gamification Engine
+
 - ✅ Multiple challenge types (fixed, streak, percentage, group)
 - ✅ Points & scoring system
 - ✅ 10+ achievement badges
@@ -263,6 +271,7 @@ pnpm db:seed:prod
 API docs available at: `http://localhost:3002/docs`
 
 Key endpoints:
+
 - `POST /api/v1/auth/send-otp` - Send OTP
 - `POST /api/v1/auth/verify-otp` - Verify OTP
 - `GET /api/v1/challenges` - List challenges
@@ -313,24 +322,28 @@ Proprietary - All rights reserved
 ## 🗺️ Roadmap
 
 ### ✅ Phase 1 - MVP (Current)
+
 - Core gamification features
 - M-Pesa integration
 - Admin dashboard
 - Member PWA
 
 ### 🚧 Phase 2 - Growth (Q2 2024)
+
 - WhatsApp bot
 - Advanced analytics
 - Referral system
 - Multi-currency support
 
 ### 📅 Phase 3 - Scale (Q3-Q4 2024)
+
 - Mobile native apps
 - API marketplace
 - AI insights
 - Multi-country expansion
 
 ### 🔮 Phase 4 - Platform (2025)
+
 - Full Chama OS
 - Investment tracking
 - Loan management
@@ -339,6 +352,7 @@ Proprietary - All rights reserved
 ## 💰 Business Model
 
 **Pricing:**
+
 - Starter: $200/month (up to 100 members)
 - Growth: $500/month (up to 500 members)
 - Enterprise: $2,000+/month (unlimited)
@@ -350,6 +364,7 @@ Proprietary - All rights reserved
 ## 📞 Contact
 
 **Developer:** Your Name
+
 - Twitter: @yourhandle
 - LinkedIn: linkedin.com/in/yourprofile
 - Email: you@email.com

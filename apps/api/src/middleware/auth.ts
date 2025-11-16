@@ -26,11 +26,7 @@ export function authenticate(): MiddlewareHandler {
       const payload = verify(token, JWT_SECRET) as JWTPayload;
 
       // Fetch user to ensure they still exist and are active
-      const [user] = await db
-        .select()
-        .from(users)
-        .where(eq(users.id, payload.userId))
-        .limit(1);
+      const [user] = await db.select().from(users).where(eq(users.id, payload.userId)).limit(1);
 
       if (!user || user.deletedAt) {
         throw new AppError('UNAUTHORIZED', 'User not found or inactive', 401);

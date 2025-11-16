@@ -18,8 +18,8 @@ export async function sendSMS(phoneNumber: string, message: string): Promise<boo
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'apiKey': AT_API_KEY,
-        'Accept': 'application/json',
+        apiKey: AT_API_KEY,
+        Accept: 'application/json',
       },
       body: new URLSearchParams({
         username: AT_USERNAME,
@@ -55,7 +55,11 @@ export async function sendOTPSMS(phoneNumber: string, otp: string) {
 /**
  * Send welcome SMS
  */
-export async function sendWelcomeSMS(phoneNumber: string, firstName: string, organizationName: string) {
+export async function sendWelcomeSMS(
+  phoneNumber: string,
+  firstName: string,
+  organizationName: string
+) {
   const message = `Welcome to ${organizationName} on SaveGame, ${firstName}! Start saving and compete with your peers. Download our app to get started.`;
   return await sendSMS(phoneNumber, message);
 }
@@ -75,10 +79,7 @@ export async function sendTransactionConfirmationSMS(
 /**
  * Send challenge joined SMS
  */
-export async function sendChallengeJoinedSMS(
-  phoneNumber: string,
-  challengeName: string
-) {
+export async function sendChallengeJoinedSMS(phoneNumber: string, challengeName: string) {
   const message = `You've joined "${challengeName}"! Start saving to climb the leaderboard. Good luck!`;
   return await sendSMS(phoneNumber, message);
 }
@@ -86,10 +87,7 @@ export async function sendChallengeJoinedSMS(
 /**
  * Send achievement unlocked SMS
  */
-export async function sendAchievementUnlockedSMS(
-  phoneNumber: string,
-  achievementName: string
-) {
+export async function sendAchievementUnlockedSMS(phoneNumber: string, achievementName: string) {
   const message = `🏆 Achievement Unlocked: ${achievementName}! You're doing great. Keep saving!`;
   return await sendSMS(phoneNumber, message);
 }

@@ -1,7 +1,9 @@
 # MVP Implementation Plan
+
 ## White-Label Savings Gamification Platform
 
 ### 🎯 MVP Goal
+
 Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 
 ---
@@ -11,6 +13,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### **Week 1-2: Foundation & Setup**
 
 #### Week 1: Project Setup
+
 - [ ] Initialize monorepo (Turborepo + pnpm)
 - [ ] Set up Next.js apps (admin + member)
 - [ ] Set up Hono API
@@ -25,6 +28,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 **Deliverable:** Working local development environment
 
 #### Week 2: Authentication & Core Models
+
 - [ ] Implement phone-based auth (OTP via AfricasTalking)
 - [ ] JWT token generation + refresh
 - [ ] Multi-tenant middleware
@@ -44,6 +48,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### **Week 3-4: Core Features**
 
 #### Week 3: Admin Dashboard
+
 - [ ] Dashboard layout + navigation
 - [ ] Organization settings page
   - Organization profile
@@ -65,6 +70,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 **Deliverable:** Admin can manage organization and create challenges
 
 #### Week 4: Member Experience (PWA)
+
 - [ ] Member dashboard/home
   - Active challenges
   - Personal stats
@@ -93,6 +99,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### **Week 5-6: Gamification & Integrations**
 
 #### Week 5: Gamification Engine
+
 - [ ] Points calculation system
   - Base points per KES saved
   - Streak multipliers
@@ -117,6 +124,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 **Deliverable:** Full gamification mechanics working
 
 #### Week 6: M-Pesa Integration
+
 - [ ] Set up M-Pesa Daraja API sandbox
   - Register app
   - Get credentials
@@ -146,6 +154,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### **Week 7: Notifications & Analytics**
 
 #### Week 7: Notifications System
+
 - [ ] SMS notifications (AfricasTalking)
   - Welcome message
   - Challenge joined
@@ -166,6 +175,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 **Deliverable:** Automated notifications working
 
 #### Analytics Dashboard (Admin)
+
 - [ ] Overview metrics
   - Total members
   - Active challenges
@@ -193,6 +203,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### **Week 8: Testing, Polish & Launch Prep**
 
 #### Week 8: Final Testing & Deployment
+
 - [ ] End-to-end testing
   - Full user journey (admin)
   - Full user journey (member)
@@ -234,6 +245,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### ✅ MUST HAVE (MVP)
 
 **Admin Dashboard:**
+
 - ✅ Organization setup & branding
 - ✅ Member management (add, view, remove)
 - ✅ Create challenges (fixed amount, streak)
@@ -241,6 +253,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 - ✅ Manual transaction verification
 
 **Member Experience:**
+
 - ✅ User registration (phone + OTP)
 - ✅ View active challenges
 - ✅ Join challenges
@@ -249,17 +262,20 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 - ✅ Earn badges
 
 **Gamification:**
+
 - ✅ Points system
 - ✅ Leaderboards (challenge-specific)
 - ✅ 5-10 achievement badges
 - ✅ Streak tracking
 
 **Integrations:**
+
 - ✅ M-Pesa payment integration
 - ✅ SMS notifications
 - ✅ Automated transaction verification
 
 **Infrastructure:**
+
 - ✅ Multi-tenant architecture
 - ✅ Phone-based authentication
 - ✅ Basic security (rate limiting, validation)
@@ -294,6 +310,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### Manual Testing Checklist
 
 **Admin Flow:**
+
 1. [ ] Create organization account
 2. [ ] Set up branding (logo, colors)
 3. [ ] Add 10 test members
@@ -303,6 +320,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 7. [ ] Export CSV report
 
 **Member Flow:**
+
 1. [ ] Register with phone number
 2. [ ] Verify OTP
 3. [ ] View available challenges
@@ -315,6 +333,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 10. [ ] View transaction history
 
 **M-Pesa Flow:**
+
 1. [ ] Initiate STK push
 2. [ ] Complete payment on phone
 3. [ ] Webhook receives IPN
@@ -327,17 +346,20 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### Automated Testing (If Time Permits)
 
 **Unit Tests:**
+
 - Points calculation logic
 - Badge award conditions
 - Leaderboard ranking algorithm
 - Transaction verification
 
 **Integration Tests:**
+
 - API endpoint responses
 - Database operations
 - M-Pesa webhook handling
 
 **E2E Tests (Playwright):**
+
 - Complete signup flow
 - Challenge creation flow
 - Challenge participation flow
@@ -369,18 +391,21 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### Launch Week (Week 8)
 
 **Day 1-2: Setup**
+
 - Create organization account for pilot
 - Configure branding
 - Import member list
 - Train admin on dashboard
 
 **Day 3-5: Member Onboarding**
+
 - Admin invites members via SMS
 - Members register + verify
 - Share onboarding video
 - Answer questions in WhatsApp group
 
 **Day 6-7: First Challenge**
+
 - Admin creates first challenge
 - Members join challenge
 - First transactions start flowing
@@ -389,18 +414,21 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### Post-Launch (Week 9-12)
 
 **Week 9: Support & Iterate**
+
 - Daily check-ins with pilot customer
 - Fix bugs immediately
 - Collect feedback
 - Monitor analytics
 
 **Week 10: Optimize**
+
 - Improve based on feedback
 - A/B test challenge types
 - Optimize notification timing
 - Improve UI based on usage
 
 **Week 11-12: Measure & Document**
+
 - Calculate ROI for pilot customer
 - Document success metrics
 - Create case study
@@ -414,10 +442,12 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### Development Costs (Weeks 1-8)
 
 **Your Time:**
+
 - 40 hours/week × 8 weeks = 320 hours
 - (Sweat equity - no cash cost)
 
 **Services:**
+
 - Domain name: $12/year
 - Vercel (free tier): $0
 - Railway (Starter): $5/month × 2 = $10
@@ -429,12 +459,14 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ### Post-MVP Costs (Monthly)
 
 **Hosting:**
+
 - Vercel Pro (if needed): $20
 - Railway: $20-50 (depends on usage)
 - Upstash Redis: $10
 - Database: $0 (included in Railway)
 
 **Services:**
+
 - AfricasTalking SMS: $50-200 (depends on volume)
 - M-Pesa transaction fees: ~1.5% (pass to customer)
 - Domain: $1
@@ -447,6 +479,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ## 🎯 Success Criteria for MVP
 
 ### Technical Success:
+
 - [ ] All core features working
 - [ ] Zero critical bugs
 - [ ] API response time < 200ms
@@ -455,6 +488,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 - [ ] Passes security audit
 
 ### Business Success:
+
 - [ ] 1 pilot customer onboarded
 - [ ] 20+ active members in pilot
 - [ ] 70%+ challenge participation
@@ -463,6 +497,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 - [ ] Customer willing to pay after pilot
 
 ### Ready for Scale:
+
 - [ ] Can onboard new organization in < 1 hour
 - [ ] Documentation complete
 - [ ] Monitoring in place
@@ -475,6 +510,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ## 🔄 Post-MVP Roadmap
 
 ### Month 3-4: Early Customers
+
 - Target: 5-10 paying customers
 - Improve based on pilot feedback
 - Add WhatsApp notifications
@@ -482,6 +518,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 - Create marketing website
 
 ### Month 5-6: Product-Market Fit
+
 - Target: 20-30 customers
 - Advanced challenge types
 - Team competitions
@@ -489,6 +526,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 - Partner with Sacco association
 
 ### Month 7-12: Scale
+
 - Target: 50-100 customers
 - API for third-party integrations
 - Mobile native apps
@@ -500,9 +538,11 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 ## 🤝 Getting Your First Pilot Customer
 
 ### The Pitch (30 seconds):
+
 > "I've built a platform that makes saving money fun through gamification. Your Chama members compete on leaderboards, earn badges, and track progress together. Early pilots saw 25% higher savings rates. Free 60-day trial, then $100/month. Interested in trying it?"
 
 ### Who to Approach:
+
 1. **Your personal network:**
    - Friends/family in Chamas
    - Colleagues' investment groups
@@ -518,6 +558,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
    - Entrepreneurship events
 
 ### What They Need to Commit:
+
 - 30-minute onboarding call
 - Share member phone numbers
 - Create 1-2 challenges
@@ -526,6 +567,7 @@ Launch a functional gamification platform with 1 pilot customer in 6-8 weeks.
 - Provide feedback
 
 ### What You Provide:
+
 - Free access for 60 days
 - Personal onboarding
 - 24/7 WhatsApp support

@@ -51,9 +51,7 @@ export default function LoginPage() {
         {step === 'phone' ? (
           <form onSubmit={handleSendOTP} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Phone Number
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
               <input
                 type="tel"
                 placeholder="+254712345678"
@@ -62,9 +60,7 @@ export default function LoginPage() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Enter your registered phone number
-              </p>
+              <p className="text-xs text-gray-500 mt-1">Enter your registered phone number</p>
             </div>
 
             <button

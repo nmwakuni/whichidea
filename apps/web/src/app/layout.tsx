@@ -8,14 +8,10 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'SaveGame Admin - Savings Gamification Platform',
-  description: 'Manage your organization\'s savings challenges and members',
+  description: "Manage your organization's savings challenges and members",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>

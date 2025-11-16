@@ -4,7 +4,9 @@ import { users } from './users';
 
 export const teams = pgTable('teams', {
   id: uuid('id').primaryKey().defaultRandom(),
-  challengeId: uuid('challenge_id').notNull().references(() => challenges.id, { onDelete: 'cascade' }),
+  challengeId: uuid('challenge_id')
+    .notNull()
+    .references(() => challenges.id, { onDelete: 'cascade' }),
 
   // Info
   name: varchar('name', { length: 100 }).notNull(),

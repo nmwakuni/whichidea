@@ -52,7 +52,10 @@ export default function ChallengesPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {challenges.map((challenge: any) => (
-            <div key={challenge.id} className="bg-white rounded-lg shadow hover:shadow-lg transition p-6">
+            <div
+              key={challenge.id}
+              className="bg-white rounded-lg shadow hover:shadow-lg transition p-6"
+            >
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">{challenge.name}</h3>
@@ -69,7 +72,8 @@ export default function ChallengesPage() {
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex items-center">
                   <Calendar className="h-4 w-4 mr-2" />
-                  {new Date(challenge.startDate).toLocaleDateString()} - {new Date(challenge.endDate).toLocaleDateString()}
+                  {new Date(challenge.startDate).toLocaleDateString()} -{' '}
+                  {new Date(challenge.endDate).toLocaleDateString()}
                 </div>
                 <div className="flex items-center">
                   <Users className="h-4 w-4 mr-2" />

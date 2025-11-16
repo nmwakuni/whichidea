@@ -23,12 +23,7 @@ userRoutes.get('/', requireRole('org_admin'), validateQuery(paginationSchema), a
   let queryBuilder = db
     .select()
     .from(users)
-    .where(
-      and(
-        eq(users.organizationId, organizationId),
-        eq(users.deletedAt, null)
-      )
-    );
+    .where(and(eq(users.organizationId, organizationId), eq(users.deletedAt, null)));
 
   if (query) {
     queryBuilder = queryBuilder.where(
@@ -41,19 +36,11 @@ userRoutes.get('/', requireRole('org_admin'), validateQuery(paginationSchema), a
   }
 
   const [data, count] = await Promise.all([
-    queryBuilder
-      .orderBy(desc(users.createdAt))
-      .limit(pageSize)
-      .offset(offset),
+    queryBuilder.orderBy(desc(users.createdAt)).limit(pageSize).offset(offset),
     db
       .select({ count: sql`count(*)` })
       .from(users)
-      .where(
-        and(
-          eq(users.organizationId, organizationId),
-          eq(users.deletedAt, null)
-        )
-      ),
+      .where(and(eq(users.organizationId, organizationId), eq(users.deletedAt, null))),
   ]);
 
   const total = Number(count[0]?.count || 0);
@@ -82,12 +69,7 @@ userRoutes.post('/', requireRole('org_admin'), validateBody(createUserSchema), a
   const [existing] = await db
     .select()
     .from(users)
-    .where(
-      and(
-        eq(users.phoneNumber, formattedPhone),
-        eq(users.organizationId, organizationId)
-      )
-    )
+    .where(and(eq(users.phoneNumber, formattedPhone), eq(users.organizationId, organizationId)))
     .limit(1);
 
   if (existing && !existing.deletedAt) {
@@ -112,10 +94,13 @@ userRoutes.post('/', requireRole('org_admin'), validateBody(createUserSchema), a
     })
     .where(eq(organizations.id, organizationId));
 
-  return c.json({
-    success: true,
-    data: newUser,
-  }, 201);
+  return c.json(
+    {
+      success: true,
+      data: newUser,
+    },
+    201
+  );
 });
 
 // Get user by ID
@@ -127,11 +112,7 @@ userRoutes.get('/:id', async (c) => {
     .select()
     .from(users)
     .where(
-      and(
-        eq(users.id, id),
-        eq(users.organizationId, organizationId),
-        eq(users.deletedAt, null)
-      )
+      and(eq(users.id, id), eq(users.organizationId, organizationId), eq(users.deletedAt, null))
     )
     .limit(1);
 
@@ -164,12 +145,7 @@ userRoutes.patch('/:id', validateBody(updateUserSchema), async (c) => {
       ...updates,
       updatedAt: new Date(),
     })
-    .where(
-      and(
-        eq(users.id, id),
-        eq(users.organizationId, organizationId)
-      )
-    )
+    .where(and(eq(users.id, id), eq(users.organizationId, organizationId)))
     .returning();
 
   if (!updated) {
@@ -190,12 +166,7 @@ userRoutes.delete('/:id', requireRole('org_admin'), async (c) => {
   const [deleted] = await db
     .update(users)
     .set({ deletedAt: new Date() })
-    .where(
-      and(
-        eq(users.id, id),
-        eq(users.organizationId, organizationId)
-      )
-    )
+    .where(and(eq(users.id, id), eq(users.organizationId, organizationId)))
     .returning();
 
   if (!deleted) {

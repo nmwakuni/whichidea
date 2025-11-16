@@ -52,7 +52,9 @@ export default function DashboardPage() {
     <div>
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
-        <p className="text-gray-600 mt-2">Welcome back! Here's what's happening with your organization.</p>
+        <p className="text-gray-600 mt-2">
+          Welcome back! Here's what's happening with your organization.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
@@ -81,10 +83,16 @@ export default function DashboardPage() {
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
           <div className="space-y-2">
-            <a href="/dashboard/challenges/new" className="block px-4 py-2 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 text-sm font-medium">
+            <a
+              href="/dashboard/challenges/new"
+              className="block px-4 py-2 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 text-sm font-medium"
+            >
               Create New Challenge
             </a>
-            <a href="/dashboard/members/new" className="block px-4 py-2 bg-green-50 text-green-600 rounded-md hover:bg-green-100 text-sm font-medium">
+            <a
+              href="/dashboard/members/new"
+              className="block px-4 py-2 bg-green-50 text-green-600 rounded-md hover:bg-green-100 text-sm font-medium"
+            >
               Add New Member
             </a>
           </div>

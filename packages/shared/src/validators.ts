@@ -1,17 +1,22 @@
 import { z } from 'zod';
 
 // Common validators
-export const phoneNumberSchema = z.string()
+export const phoneNumberSchema = z
+  .string()
   .regex(/^\+?254[17]\d{8}$/, 'Invalid Kenyan phone number')
-  .transform((val) => val.startsWith('+') ? val : `+${val}`);
+  .transform((val) => (val.startsWith('+') ? val : `+${val}`));
 
 export const emailSchema = z.string().email();
 
-export const otpSchema = z.string().length(6).regex(/^\d{6}$/, 'OTP must be 6 digits');
+export const otpSchema = z
+  .string()
+  .length(6)
+  .regex(/^\d{6}$/, 'OTP must be 6 digits');
 
 export const uuidSchema = z.string().uuid();
 
-export const slugSchema = z.string()
+export const slugSchema = z
+  .string()
   .min(3)
   .max(100)
   .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase letters, numbers, and hyphens only');
@@ -84,12 +89,14 @@ export const createChallengeSchema = z.object({
   pointsPerKes: z.number().positive().default(1),
   streakMultiplier: z.number().positive().default(1.5),
   completionBonus: z.number().int().nonnegative().default(1000),
-  rules: z.object({
-    minTransactionAmount: z.number().positive().optional(),
-    maxParticipants: z.number().int().positive().optional(),
-    allowTeams: z.boolean().optional(),
-    private: z.boolean().optional(),
-  }).optional(),
+  rules: z
+    .object({
+      minTransactionAmount: z.number().positive().optional(),
+      maxParticipants: z.number().int().positive().optional(),
+      allowTeams: z.boolean().optional(),
+      private: z.boolean().optional(),
+    })
+    .optional(),
 });
 
 export const updateChallengeSchema = createChallengeSchema.partial();
@@ -155,16 +162,26 @@ export const paginationSchema = z.object({
 
 // Query filters
 export const dateRangeSchema = z.object({
-  startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-  endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  startDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  endDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
 });
 
-export const challengeFilterSchema = paginationSchema.extend({
-  status: z.enum(['draft', 'active', 'completed', 'cancelled']).optional(),
-  type: z.enum(['fixed_amount', 'percentage_increase', 'streak', 'group']).optional(),
-}).merge(dateRangeSchema);
+export const challengeFilterSchema = paginationSchema
+  .extend({
+    status: z.enum(['draft', 'active', 'completed', 'cancelled']).optional(),
+    type: z.enum(['fixed_amount', 'percentage_increase', 'streak', 'group']).optional(),
+  })
+  .merge(dateRangeSchema);
 
-export const transactionFilterSchema = paginationSchema.extend({
-  status: z.enum(['pending', 'verified', 'failed', 'refunded']).optional(),
-  challengeId: uuidSchema.optional(),
-}).merge(dateRangeSchema);
+export const transactionFilterSchema = paginationSchema
+  .extend({
+    status: z.enum(['pending', 'verified', 'failed', 'refunded']).optional(),
+    challengeId: uuidSchema.optional(),
+  })
+  .merge(dateRangeSchema);

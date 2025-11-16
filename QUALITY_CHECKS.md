@@ -3,12 +3,14 @@
 ## ✅ Completed Checks
 
 ### 1. Formatting Setup
+
 - ✅ Prettier configured (.prettierrc)
 - ✅ Format rules: 100 char width, single quotes, semicolons
 - ✅ TailwindCSS plugin for class sorting
 - ✅ Ignore files configured
 
 ### 2. Linting Setup
+
 - ✅ ESLint configured for entire monorepo
 - ✅ TypeScript ESLint rules
 - ✅ Next.js specific rules (web + member apps)
@@ -16,6 +18,7 @@
 - ✅ Custom rules for code quality
 
 ### 3. Scripts Added
+
 - ✅ `pnpm format` - Format all code
 - ✅ `pnpm format:check` - Check formatting
 - ✅ `pnpm lint` - Lint all code
@@ -26,6 +29,7 @@
 - ✅ `pnpm check` - Full CI-style check (install + validate + build)
 
 ### 4. Build Configuration
+
 - ✅ All apps have build scripts
 - ✅ TypeScript configs validated
 - ✅ Next.js configs validated
@@ -34,6 +38,7 @@
 ## 📝 How to Use
 
 ### Before Committing
+
 ```bash
 # Check everything
 pnpm validate
@@ -43,6 +48,7 @@ pnpm validate:fix
 ```
 
 ### Format Code
+
 ```bash
 # Format all files
 pnpm format
@@ -52,6 +58,7 @@ pnpm format:check
 ```
 
 ### Lint Code
+
 ```bash
 # Lint all apps
 pnpm lint
@@ -61,12 +68,14 @@ pnpm lint:fix
 ```
 
 ### Type Check
+
 ```bash
 # Check types across all apps
 pnpm type-check
 ```
 
 ### Build Test
+
 ```bash
 # Build everything
 pnpm build
@@ -78,6 +87,7 @@ pnpm build:api
 ```
 
 ### Full CI Check
+
 ```bash
 # Run complete check (like CI would)
 pnpm check
@@ -86,12 +96,15 @@ pnpm check
 ## ⚠️ Known Issues
 
 ### Testing
+
 - ❌ No test files written yet
 - 📝 Test setup needs to be added for production
 - 📝 Recommended: Vitest for unit, Playwright for E2E
 
 ### Type Errors (Expected in Development)
+
 Some type issues may appear because:
+
 - Missing `node_modules` - Run `pnpm install`
 - Database types not generated - Run `pnpm db:migrate`
 - Missing dependencies - Check package.json
@@ -130,6 +143,7 @@ pnpm add -D @playwright/test
 ## 🎯 Production Checklist
 
 Before deploying:
+
 - [ ] Run `pnpm check` - Everything passes
 - [ ] Run `pnpm build` - All apps build successfully
 - [ ] Fix any TypeScript errors

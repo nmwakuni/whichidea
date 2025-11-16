@@ -58,7 +58,12 @@ export type TransactionStatus = 'pending' | 'verified' | 'failed' | 'refunded';
 export type TransactionSource = 'mpesa' | 'manual' | 'bulk_upload';
 
 // Achievement types
-export type AchievementType = 'first_save' | 'streak' | 'total_saved' | 'challenges_completed' | 'rank';
+export type AchievementType =
+  | 'first_save'
+  | 'streak'
+  | 'total_saved'
+  | 'challenges_completed'
+  | 'rank';
 export type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary';
 
 // Notification types

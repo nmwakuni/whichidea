@@ -83,10 +83,12 @@ VALUES ('<org_id>', '+254722222222', 'John', 'Doe', 'member', true);
 ### 6. Test the Apps
 
 **Admin Dashboard:** http://localhost:3000
+
 - Login with: `+254712345678`
 - OTP will be logged to console (check API logs)
 
 **Member PWA:** http://localhost:3001
+
 - Login with: `+254722222222`
 - OTP will be logged to console
 
@@ -117,6 +119,7 @@ whichidea/
 ### Making Changes
 
 1. **Database Changes:**
+
    ```bash
    # Update schema in packages/database/src/schema/
    # Then push changes
@@ -125,6 +128,7 @@ whichidea/
    ```
 
 2. **API Changes:**
+
    ```bash
    # Edit files in apps/api/src/
    # Server auto-reloads with tsx watch
@@ -157,28 +161,33 @@ pnpm format
 ## Key Features to Test
 
 ### 1. Authentication
+
 - Send OTP to phone
 - Verify OTP and login
 - Token refresh
 
 ### 2. Challenges (Admin)
+
 - Create challenge
 - Edit challenge
 - Publish challenge
 - View participants
 
 ### 3. Challenges (Member)
+
 - View active challenges
 - Join challenge
 - See leaderboard
 - Track progress
 
 ### 4. Transactions
+
 - Manual transaction entry (admin)
 - View transaction history
 - Points calculation
 
 ### 5. Analytics
+
 - Overview dashboard
 - Savings trends
 - Engagement metrics

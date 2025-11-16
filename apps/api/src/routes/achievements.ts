@@ -21,10 +21,7 @@ achievementRoutes.get('/', async (c) => {
     .from(achievements)
     .where(
       and(
-        or(
-          eq(achievements.organizationId, organizationId),
-          isNull(achievements.organizationId)
-        ),
+        or(eq(achievements.organizationId, organizationId), isNull(achievements.organizationId)),
         isNull(achievements.deletedAt)
       )
     )
@@ -37,23 +34,31 @@ achievementRoutes.get('/', async (c) => {
 });
 
 // Create achievement (admin only)
-achievementRoutes.post('/', requireRole('org_admin'), validateBody(createAchievementSchema), async (c) => {
-  const organizationId = c.get('organizationId');
-  const achievementData = c.get('validatedBody');
+achievementRoutes.post(
+  '/',
+  requireRole('org_admin'),
+  validateBody(createAchievementSchema),
+  async (c) => {
+    const organizationId = c.get('organizationId');
+    const achievementData = c.get('validatedBody');
 
-  const [newAchievement] = await db
-    .insert(achievements)
-    .values({
-      ...achievementData,
-      organizationId,
-    })
-    .returning();
+    const [newAchievement] = await db
+      .insert(achievements)
+      .values({
+        ...achievementData,
+        organizationId,
+      })
+      .returning();
 
-  return c.json({
-    success: true,
-    data: newAchievement,
-  }, 201);
-});
+    return c.json(
+      {
+        success: true,
+        data: newAchievement,
+      },
+      201
+    );
+  }
+);
 
 // Get achievement by ID
 achievementRoutes.get('/:id', async (c) => {
@@ -91,12 +96,7 @@ achievementRoutes.get('/user/:userId', async (c) => {
   const [user] = await db
     .select()
     .from(users)
-    .where(
-      and(
-        eq(users.id, userId),
-        eq(users.organizationId, organizationId)
-      )
-    )
+    .where(and(eq(users.id, userId), eq(users.organizationId, organizationId)))
     .limit(1);
 
   if (!user) {
@@ -128,12 +128,7 @@ achievementRoutes.post('/award', requireRole('org_admin'), async (c) => {
   const [user] = await db
     .select()
     .from(users)
-    .where(
-      and(
-        eq(users.id, userId),
-        eq(users.organizationId, organizationId)
-      )
-    )
+    .where(and(eq(users.id, userId), eq(users.organizationId, organizationId)))
     .limit(1);
 
   if (!user) {
@@ -145,10 +140,7 @@ achievementRoutes.post('/award', requireRole('org_admin'), async (c) => {
     .select()
     .from(userAchievements)
     .where(
-      and(
-        eq(userAchievements.userId, userId),
-        eq(userAchievements.achievementId, achievementId)
-      )
+      and(eq(userAchievements.userId, userId), eq(userAchievements.achievementId, achievementId))
     )
     .limit(1);
 
@@ -176,10 +168,13 @@ achievementRoutes.post('/award', requireRole('org_admin'), async (c) => {
 
   // TODO: Send notification to user
 
-  return c.json({
-    success: true,
-    data: awarded,
-  }, 201);
+  return c.json(
+    {
+      success: true,
+      data: awarded,
+    },
+    201
+  );
 });
 
 export default achievementRoutes;

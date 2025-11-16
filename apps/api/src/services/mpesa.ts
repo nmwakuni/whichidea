@@ -7,9 +7,10 @@ const MPESA_PASSKEY = process.env.MPESA_PASSKEY;
 const MPESA_SHORTCODE = process.env.MPESA_SHORTCODE || '174379';
 const MPESA_CALLBACK_URL = process.env.MPESA_CALLBACK_URL;
 
-const BASE_URL = MPESA_ENVIRONMENT === 'production'
-  ? 'https://api.safaricom.co.ke'
-  : 'https://sandbox.safaricom.co.ke';
+const BASE_URL =
+  MPESA_ENVIRONMENT === 'production'
+    ? 'https://api.safaricom.co.ke'
+    : 'https://sandbox.safaricom.co.ke';
 
 /**
  * Get M-Pesa access token
@@ -23,7 +24,7 @@ async function getAccessToken(): Promise<string> {
 
   const response = await fetch(`${BASE_URL}/oauth/v1/generate?grant_type=client_credentials`, {
     headers: {
-      'Authorization': `Basic ${auth}`,
+      Authorization: `Basic ${auth}`,
     },
   });
 
@@ -40,7 +41,10 @@ async function getAccessToken(): Promise<string> {
  * Generate M-Pesa password
  */
 function generatePassword(): { password: string; timestamp: string } {
-  const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, 14);
+  const timestamp = new Date()
+    .toISOString()
+    .replace(/[^0-9]/g, '')
+    .slice(0, 14);
   const password = Buffer.from(`${MPESA_SHORTCODE}${MPESA_PASSKEY}${timestamp}`).toString('base64');
 
   return { password, timestamp };
@@ -83,7 +87,7 @@ export async function initiateSTKPush(data: {
   const response = await fetch(`${BASE_URL}/mpesa/stkpush/v1/processrequest`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(payload),
@@ -124,7 +128,7 @@ export async function querySTKPushStatus(checkoutRequestId: string) {
   const response = await fetch(`${BASE_URL}/mpesa/stkpushquery/v1/query`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(payload),
@@ -156,7 +160,7 @@ export async function registerC2BURLs(validationUrl: string, confirmationUrl: st
   const response = await fetch(`${BASE_URL}/mpesa/c2b/v1/registerurl`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(payload),
@@ -185,7 +189,7 @@ export async function queryAccountBalance() {
   const response = await fetch(`${BASE_URL}/mpesa/accountbalance/v1/query`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(payload),

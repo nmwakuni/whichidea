@@ -1,14 +1,39 @@
-import { pgTable, uuid, varchar, text, jsonb, timestamp, integer, decimal, date, pgEnum } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  uuid,
+  varchar,
+  text,
+  jsonb,
+  timestamp,
+  integer,
+  decimal,
+  date,
+  pgEnum,
+} from 'drizzle-orm/pg-core';
 import { organizations } from './organizations';
 import { users } from './users';
 
-export const challengeType = pgEnum('challenge_type', ['fixed_amount', 'percentage_increase', 'streak', 'group']);
-export const challengeStatus = pgEnum('challenge_status', ['draft', 'active', 'completed', 'cancelled']);
+export const challengeType = pgEnum('challenge_type', [
+  'fixed_amount',
+  'percentage_increase',
+  'streak',
+  'group',
+]);
+export const challengeStatus = pgEnum('challenge_status', [
+  'draft',
+  'active',
+  'completed',
+  'cancelled',
+]);
 
 export const challenges = pgTable('challenges', {
   id: uuid('id').primaryKey().defaultRandom(),
-  organizationId: uuid('organization_id').notNull().references(() => organizations.id, { onDelete: 'cascade' }),
-  createdBy: uuid('created_by').notNull().references(() => users.id),
+  organizationId: uuid('organization_id')
+    .notNull()
+    .references(() => organizations.id, { onDelete: 'cascade' }),
+  createdBy: uuid('created_by')
+    .notNull()
+    .references(() => users.id),
 
   // Basic info
   name: varchar('name', { length: 255 }).notNull(),
@@ -17,17 +42,19 @@ export const challenges = pgTable('challenges', {
   status: challengeStatus('status').notNull().default('draft'),
 
   // Challenge configuration
-  target: jsonb('target').$type<{
-    amount?: number;
-    frequency?: 'daily' | 'weekly' | 'monthly';
-    durationWeeks?: number;
-    increasePercentage?: number;
-    baselinePeriod?: 'last_month' | 'last_3_months';
-    consecutiveWeeks?: number;
-    minAmountPerWeek?: number;
-    teamSize?: number;
-    teamTarget?: number;
-  }>().notNull(),
+  target: jsonb('target')
+    .$type<{
+      amount?: number;
+      frequency?: 'daily' | 'weekly' | 'monthly';
+      durationWeeks?: number;
+      increasePercentage?: number;
+      baselinePeriod?: 'last_month' | 'last_3_months';
+      consecutiveWeeks?: number;
+      minAmountPerWeek?: number;
+      teamSize?: number;
+      teamTarget?: number;
+    }>()
+    .notNull(),
 
   // Timing
   startDate: date('start_date').notNull(),
@@ -39,16 +66,18 @@ export const challenges = pgTable('challenges', {
   completionBonus: integer('completion_bonus').default(1000),
 
   // Rules
-  rules: jsonb('rules').$type<{
-    minTransactionAmount?: number;
-    maxParticipants?: number;
-    allowTeams?: boolean;
-    private?: boolean;
-  }>().default({
-    minTransactionAmount: 100,
-    allowTeams: false,
-    private: false
-  }),
+  rules: jsonb('rules')
+    .$type<{
+      minTransactionAmount?: number;
+      maxParticipants?: number;
+      allowTeams?: boolean;
+      private?: boolean;
+    }>()
+    .default({
+      minTransactionAmount: 100,
+      allowTeams: false,
+      private: false,
+    }),
 
   // Stats
   participantsCount: integer('participants_count').default(0),

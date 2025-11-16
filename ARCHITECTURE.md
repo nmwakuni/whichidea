@@ -1,4 +1,5 @@
 # Technical Architecture
+
 ## White-Label Savings Gamification Platform
 
 ### 🏗️ System Architecture Overview
@@ -295,6 +296,7 @@ events
 ### 🔐 Authentication & Authorization
 
 **Auth Flow:**
+
 1. **Phone-based authentication** (primary for Kenya)
    - SMS OTP verification
    - Session tokens (JWT)
@@ -311,32 +313,35 @@ events
    - `member` - Regular saver
 
 **Middleware Stack:**
+
 ```typescript
 // Example Hono middleware chain
-app.use('*', cors())
-app.use('*', logger())
-app.use('/api/*', authenticate())
-app.use('/api/admin/*', requireRole('org_admin'))
-app.use('/api/*', rateLimiter())
-app.use('/api/*', validateRequest())
+app.use('*', cors());
+app.use('*', logger());
+app.use('/api/*', authenticate());
+app.use('/api/admin/*', requireRole('org_admin'));
+app.use('/api/*', rateLimiter());
+app.use('/api/*', validateRequest());
 ```
 
 ### 📊 Gamification Engine
 
 **Scoring System:**
+
 ```typescript
 interface ScoringRules {
-  points_per_kes: number;        // e.g., 1 KES = 1 point
-  streak_multiplier: number;     // 1.5x for 7-day streak
-  early_bird_bonus: number;      // +50 points for first 3 days
-  consistency_bonus: number;     // +100 for completing challenge
-  referral_bonus: number;        // +500 per referral
+  points_per_kes: number; // e.g., 1 KES = 1 point
+  streak_multiplier: number; // 1.5x for 7-day streak
+  early_bird_bonus: number; // +50 points for first 3 days
+  consistency_bonus: number; // +100 for completing challenge
+  referral_bonus: number; // +500 per referral
 }
 ```
 
 **Challenge Types:**
 
 1. **Fixed Amount Challenge**
+
    ```typescript
    {
      type: 'fixed_amount',
@@ -346,6 +351,7 @@ interface ScoringRules {
    ```
 
 2. **Percentage Increase**
+
    ```typescript
    {
      type: 'percentage',
@@ -354,6 +360,7 @@ interface ScoringRules {
    ```
 
 3. **Streak Challenge**
+
    ```typescript
    {
      type: 'streak',
@@ -372,6 +379,7 @@ interface ScoringRules {
 ### 🔌 M-Pesa Integration
 
 **Flow:**
+
 1. User makes deposit via M-Pesa Paybill/Till
 2. Daraja API sends webhook (IPN - Instant Payment Notification)
 3. Backend verifies transaction
@@ -380,6 +388,7 @@ interface ScoringRules {
 6. Sends confirmation notification
 
 **Webhook Handling:**
+
 ```typescript
 // Idempotency check (prevent double-processing)
 // Verify signature
@@ -438,6 +447,7 @@ GET    /api/v1/analytics/engagement
    - Analytics: Pre-compute daily
 
 2. **Database Indexes:**
+
    ```sql
    CREATE INDEX idx_transactions_user_date
      ON transactions(user_id, created_at DESC);
@@ -479,12 +489,14 @@ GET    /api/v1/analytics/engagement
 ### 📱 Mobile Strategy
 
 **Progressive Web App (PWA):**
+
 - Install prompt on first visit
 - Offline challenge progress viewing
 - Push notifications (web push)
 - Add to home screen
 
 **Future: Native Apps**
+
 - React Native wrapper around PWA
 - Better notification support
 - App store presence
@@ -492,6 +504,7 @@ GET    /api/v1/analytics/engagement
 ### 🌍 Multi-tenancy Architecture
 
 Each organization is completely isolated:
+
 - Separate database schemas (logical separation)
 - Branded subdomain: `{org-slug}.savegame.co`
 - Custom colors, logos, messaging
@@ -500,6 +513,7 @@ Each organization is completely isolated:
 ### 📈 Observability
 
 **Monitoring:**
+
 - Sentry for error tracking
 - Posthog for product analytics
 - Custom dashboards for:
@@ -509,6 +523,7 @@ Each organization is completely isolated:
   - User engagement metrics
 
 **Alerts:**
+
 - M-Pesa webhook failures
 - High error rates
 - Unusual transaction patterns
@@ -517,11 +532,13 @@ Each organization is completely isolated:
 ### 🔄 Deployment Strategy
 
 **Environments:**
+
 1. **Development** - Local
 2. **Staging** - Pre-production testing
 3. **Production** - Live
 
 **CI/CD Pipeline:**
+
 ```yaml
 1. Push to GitHub
 2. Run tests (unit + integration)
@@ -533,6 +550,7 @@ Each organization is completely isolated:
 ```
 
 **Hosting:**
+
 - **Vercel:** Next.js apps (web + member)
 - **Railway/Render:** Hono API + PostgreSQL
 - **Upstash:** Redis cache

@@ -4,7 +4,12 @@ import { eq, and, desc, sql } from 'drizzle-orm';
 import { authenticate, requireRole } from '../middleware/auth';
 import { validateBody, validateQuery } from '../middleware/validate';
 import { AppError } from '../middleware/error-handler';
-import { createChallengeSchema, updateChallengeSchema, challengeFilterSchema, joinChallengeSchema } from '@savegame/shared';
+import {
+  createChallengeSchema,
+  updateChallengeSchema,
+  challengeFilterSchema,
+  joinChallengeSchema,
+} from '@savegame/shared';
 
 const challengeRoutes = new Hono();
 
@@ -18,10 +23,7 @@ challengeRoutes.get('/', validateQuery(challengeFilterSchema), async (c) => {
 
   const offset = (page - 1) * pageSize;
 
-  let conditions = [
-    eq(challenges.organizationId, organizationId),
-    eq(challenges.deletedAt, null),
-  ];
+  let conditions = [eq(challenges.organizationId, organizationId), eq(challenges.deletedAt, null)];
 
   if (status) {
     conditions.push(eq(challenges.status, status));
@@ -61,25 +63,33 @@ challengeRoutes.get('/', validateQuery(challengeFilterSchema), async (c) => {
 });
 
 // Create challenge (admin only)
-challengeRoutes.post('/', requireRole('org_admin'), validateBody(createChallengeSchema), async (c) => {
-  const organizationId = c.get('organizationId');
-  const userId = c.get('userId');
-  const challengeData = c.get('validatedBody');
+challengeRoutes.post(
+  '/',
+  requireRole('org_admin'),
+  validateBody(createChallengeSchema),
+  async (c) => {
+    const organizationId = c.get('organizationId');
+    const userId = c.get('userId');
+    const challengeData = c.get('validatedBody');
 
-  const [newChallenge] = await db
-    .insert(challenges)
-    .values({
-      ...challengeData,
-      organizationId,
-      createdBy: userId,
-    })
-    .returning();
+    const [newChallenge] = await db
+      .insert(challenges)
+      .values({
+        ...challengeData,
+        organizationId,
+        createdBy: userId,
+      })
+      .returning();
 
-  return c.json({
-    success: true,
-    data: newChallenge,
-  }, 201);
-});
+    return c.json(
+      {
+        success: true,
+        data: newChallenge,
+      },
+      201
+    );
+  }
+);
 
 // Get challenge by ID
 challengeRoutes.get('/:id', async (c) => {
@@ -109,34 +119,34 @@ challengeRoutes.get('/:id', async (c) => {
 });
 
 // Update challenge (admin only)
-challengeRoutes.patch('/:id', requireRole('org_admin'), validateBody(updateChallengeSchema), async (c) => {
-  const { id } = c.req.param();
-  const organizationId = c.get('organizationId');
-  const updates = c.get('validatedBody');
+challengeRoutes.patch(
+  '/:id',
+  requireRole('org_admin'),
+  validateBody(updateChallengeSchema),
+  async (c) => {
+    const { id } = c.req.param();
+    const organizationId = c.get('organizationId');
+    const updates = c.get('validatedBody');
 
-  const [updated] = await db
-    .update(challenges)
-    .set({
-      ...updates,
-      updatedAt: new Date(),
-    })
-    .where(
-      and(
-        eq(challenges.id, id),
-        eq(challenges.organizationId, organizationId)
-      )
-    )
-    .returning();
+    const [updated] = await db
+      .update(challenges)
+      .set({
+        ...updates,
+        updatedAt: new Date(),
+      })
+      .where(and(eq(challenges.id, id), eq(challenges.organizationId, organizationId)))
+      .returning();
 
-  if (!updated) {
-    throw new AppError('NOT_FOUND', 'Challenge not found', 404);
+    if (!updated) {
+      throw new AppError('NOT_FOUND', 'Challenge not found', 404);
+    }
+
+    return c.json({
+      success: true,
+      data: updated,
+    });
   }
-
-  return c.json({
-    success: true,
-    data: updated,
-  });
-});
+);
 
 // Delete challenge (admin only)
 challengeRoutes.delete('/:id', requireRole('org_admin'), async (c) => {
@@ -146,12 +156,7 @@ challengeRoutes.delete('/:id', requireRole('org_admin'), async (c) => {
   const [deleted] = await db
     .update(challenges)
     .set({ deletedAt: new Date() })
-    .where(
-      and(
-        eq(challenges.id, id),
-        eq(challenges.organizationId, organizationId)
-      )
-    )
+    .where(and(eq(challenges.id, id), eq(challenges.organizationId, organizationId)))
     .returning();
 
   if (!deleted) {
@@ -223,12 +228,7 @@ challengeRoutes.post('/:id/join', validateBody(joinChallengeSchema), async (c) =
   const [existing] = await db
     .select()
     .from(challengeParticipants)
-    .where(
-      and(
-        eq(challengeParticipants.challengeId, id),
-        eq(challengeParticipants.userId, userId)
-      )
-    )
+    .where(and(eq(challengeParticipants.challengeId, id), eq(challengeParticipants.userId, userId)))
     .limit(1);
 
   if (existing) {
@@ -307,12 +307,7 @@ challengeRoutes.get('/:id/participants', async (c) => {
   const [challenge] = await db
     .select()
     .from(challenges)
-    .where(
-      and(
-        eq(challenges.id, id),
-        eq(challenges.organizationId, organizationId)
-      )
-    )
+    .where(and(eq(challenges.id, id), eq(challenges.organizationId, organizationId)))
     .limit(1);
 
   if (!challenge) {

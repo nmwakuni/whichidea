@@ -19,12 +19,7 @@ auth.post('/send-otp', validateBody(sendOtpSchema), async (c) => {
   const [existingUser] = await db
     .select()
     .from(users)
-    .where(
-      and(
-        eq(users.phoneNumber, formattedPhone),
-        eq(users.deletedAt, null)
-      )
-    )
+    .where(and(eq(users.phoneNumber, formattedPhone), eq(users.deletedAt, null)))
     .limit(1);
 
   if (!existingUser) {
@@ -64,12 +59,7 @@ auth.post('/verify-otp', validateBody(verifyOtpSchema), async (c) => {
   const [user] = await db
     .select()
     .from(users)
-    .where(
-      and(
-        eq(users.phoneNumber, formattedPhone),
-        eq(users.deletedAt, null)
-      )
-    )
+    .where(and(eq(users.phoneNumber, formattedPhone), eq(users.deletedAt, null)))
     .limit(1);
 
   if (!user) {
@@ -78,17 +68,11 @@ auth.post('/verify-otp', validateBody(verifyOtpSchema), async (c) => {
 
   // Update phone verified status
   if (!user.phoneVerified) {
-    await db
-      .update(users)
-      .set({ phoneVerified: true })
-      .where(eq(users.id, user.id));
+    await db.update(users).set({ phoneVerified: true }).where(eq(users.id, user.id));
   }
 
   // Update last active
-  await db
-    .update(users)
-    .set({ lastActiveAt: new Date() })
-    .where(eq(users.id, user.id));
+  await db.update(users).set({ lastActiveAt: new Date() }).where(eq(users.id, user.id));
 
   // Generate tokens
   const tokens = generateTokenPair({
@@ -155,11 +139,7 @@ auth.get('/me', async (c) => {
   const { verifyToken } = await import('../utils/jwt');
   const payload = verifyToken(token);
 
-  const [user] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, payload.userId))
-    .limit(1);
+  const [user] = await db.select().from(users).where(eq(users.id, payload.userId)).limit(1);
 
   if (!user || user.deletedAt) {
     throw new AppError('NOT_FOUND', 'User not found', 404);
