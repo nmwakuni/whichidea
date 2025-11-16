@@ -1,0 +1,69 @@
+{
+  "name": "savegame",
+  "version": "0.1.0",
+  "private": true,
+  "description": "White-label savings gamification platform for Chamas, Saccos, and MFIs",
+  "keywords": [
+    "fintech",
+    "gamification",
+    "savings",
+    "mpesa",
+    "kenya",
+    "chama",
+    "sacco"
+  ],
+  "author": "Your Name",
+  "license": "UNLICENSED",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:member": "turbo run dev --filter=member",
+    "dev:api": "turbo run dev --filter=api",
+    "build": "turbo run build",
+    "build:web": "turbo run build --filter=web",
+    "build:member": "turbo run build --filter=member",
+    "build:api": "turbo run build --filter=api",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
+    "type-check": "turbo run type-check",
+    "test": "turbo run test",
+    "test:unit": "turbo run test:unit",
+    "test:integration": "turbo run test:integration",
+    "test:e2e": "turbo run test:e2e",
+    "test:watch": "turbo run test:watch",
+    "test:coverage": "turbo run test:coverage",
+    "db:setup": "tsx scripts/setup-db.ts",
+    "db:migrate": "drizzle-kit push:pg",
+    "db:migrate:create": "drizzle-kit generate:pg",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:studio": "drizzle-kit studio",
+    "db:reset": "tsx scripts/reset-db.ts",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "deploy": "turbo run deploy"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "drizzle-kit": "^0.20.9",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.0.4",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.1.1",
+    "prettier-plugin-tailwindcss": "^0.5.10",
+    "tsx": "^4.7.0",
+    "turbo": "^1.11.3",
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "pnpm@8.14.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}
